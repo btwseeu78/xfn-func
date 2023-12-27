@@ -35,7 +35,7 @@ func (f *Function) RunFunction(_ context.Context, req *fnv1beta1.RunFunctionRequ
 	}
 
 	desired, err := request.GetDesiredComposedResources(req)
-	f.log.Info("Desired resource", "Object", desired)
+	f.log.Info("Desired resource", "Object", desired, "ns", desired)
 	if err != nil {
 		return nil, err
 	}
