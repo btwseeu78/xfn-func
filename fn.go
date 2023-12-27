@@ -40,7 +40,7 @@ func (f *Function) RunFunction(_ context.Context, req *fnv1beta1.RunFunctionRequ
 		return nil, err
 	}
 	observed, err := request.GetObservedComposedResources(req)
-	f.log.Info("Observed Resource", observed)
+	f.log.Info("Observed Resource", observed, "ns", observed)
 	if err != nil {
 		return nil, err
 	}
