@@ -7,3 +7,14 @@ metadata:
     render.crossplane.io/runtime: Developement
 spec:
   package: xpkg.upbound.io/test:v1.0
+...
+---
+apiVersion: pkg.crossplane.io/v1beta1
+kind: Function
+metadata:
+  name: function-patch-and-transform
+  annotations:
+    render.crossplane.io/runtime: Docker
+spec:
+  package: xpkg.upbound.io/crossplane-contrib/function-patch-and-transform:v0.1.4
+...
