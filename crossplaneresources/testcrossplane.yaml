@@ -1,0 +1,7 @@
+apiVersion: arpan.io/v1alpha1
+kind: MySpace
+metadata:
+  name: testcomposed
+  namespace: default
+spec:
+  name: test

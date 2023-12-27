@@ -1,0 +1,50 @@
+apiVersion: apiextensions.crossplane.io/v1
+kind: Composition
+metadata:
+  name: myspacecomposition
+spec:
+  compositeTypeRef:
+    apiVersion: arpan.io/v1alpha1
+    kind: XMySpace
+  mode: Pipeline
+  pipeline:
+  - step: patch-and-transform
+    functionRef:
+      name: function-patch-and-transform
+    input:
+      apiVersion: pt.fn.crossplane.io/v1beta1
+      kind: Resources
+      resources:
+      - name: customSpace
+        base:
+          apiVersion: kubernetes.crossplane.io/v1alpha1
+          kind: Object
+          spec:
+            providerConfigRef:
+              name: kubernetes-provider
+            forProvider:
+              manifest:
+                apiVersion: v1
+                kind: Namespace
+          patches:
+          - type: FromCompositeFieldPath
+            fromFieldPath: spec.name
+            toFieldPath: spec.forProvider.manifest.metadata.name
+          - type: FromCompositeFieldPath
+            fromFieldPath: metadata.labels['crossplane.io/claim-name']
+            toFieldPath: metadata.name
+          - type: FromCompositeFieldPath
+            fromFieldPath: metadata.labels['crossplane.io/claim-namespace']
+            toFieldPath: metadata.namespace
+  - step: generate-name
+    functionRef:
+      name: function-template-go
+    input:
+      apiVersion: randstrings.template.fn.crossplane.io
+      kind: RandString
+      config:
+        objects:
+        - name: some-secret
+          fieldPath: "spec.forProvider.manifest.metadata.name"
+          randomString:
+            length: 10
