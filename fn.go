@@ -48,6 +48,7 @@ func (f *Function) RunFunction(_ context.Context, req *fnv1beta1.RunFunctionRequ
 	}
 	b := make([]byte, in.Cfg.RandStr.Length/2)
 	if _, err := rand.Read(b); err != nil {
+		f.log.Info("Observed composite  Resource with panic", "res", cmp, "ns", observed)
 		panic(err)
 	}
 	randString := fmt.Sprintf("%x", b)
