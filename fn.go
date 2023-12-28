@@ -35,12 +35,14 @@ func (f *Function) RunFunction(_ context.Context, req *fnv1beta1.RunFunctionRequ
 	}
 
 	desired, err := request.GetDesiredComposedResources(req)
-	f.log.Info("Desired resource", "Object", desired, "ns", desired)
+	f.log.Info("Desired resource", "Object", desired, "ns", resource.Name("test"))
 	if err != nil {
 		return nil, err
 	}
 	observed, err := request.GetObservedComposedResources(req)
 	f.log.Info("Observed Resource", "res", observed, "ns", observed)
+	cmp, err := request.GetObservedCompositeResource(req)
+	f.log.Info("Observed composite  Resource", "res", cmp, "ns", observed)
 	if err != nil {
 		return nil, err
 	}
@@ -51,6 +53,7 @@ func (f *Function) RunFunction(_ context.Context, req *fnv1beta1.RunFunctionRequ
 	randString := fmt.Sprintf("%x", b)
 
 	for _, obj := range in.Cfg.Objs {
+		f.log.Info("Na me of the", "object", obj)
 		if observed[resource.Name(obj.Name)].Resource != nil {
 			observedPaved, err := fieldpath.PaveObject(observed[resource.Name(obj.Name)].Resource)
 			if err != nil {
