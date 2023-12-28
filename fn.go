@@ -53,7 +53,7 @@ func (f *Function) RunFunction(_ context.Context, req *fnv1beta1.RunFunctionRequ
 	randString := fmt.Sprintf("%x", b)
 
 	for _, obj := range in.Cfg.Objs {
-		f.log.Info("Na me of the", "object", obj)
+		f.log.Info("Name of the", "object", obj)
 		if observed[resource.Name(obj.Name)].Resource != nil {
 			observedPaved, err := fieldpath.PaveObject(observed[resource.Name(obj.Name)].Resource)
 			if err != nil {
@@ -68,6 +68,9 @@ func (f *Function) RunFunction(_ context.Context, req *fnv1beta1.RunFunctionRequ
 			err = patchFieldValueToObject(obj.FieldPath, obj.Prefix+randString, desired[resource.Name(obj.Name)].Resource)
 		} else {
 			err = patchFieldValueToObject(obj.FieldPath, randString, desired[resource.Name(obj.Name)].Resource)
+			if err != nil {
+				f.log.Debug("Error", "is", err, "obj", obj.FieldPath)
+			}
 		}
 	}
 	err = response.SetDesiredComposedResources(rsp, desired)
