@@ -68,7 +68,7 @@ func (f *Function) RunFunction(_ context.Context, req *fnv1beta1.RunFunctionRequ
 		if observed[resource.Name(obj.Name)].Resource == nil && obj.Prefix != "" {
 			err = patchFieldValueToObject(obj.FieldPath, obj.Prefix+randString, desired[resource.Name(obj.Name)].Resource)
 		} else {
-			f.log.Info("here on before error", "resname", desired[resource.Name(obj.Name)].Resource, "path", obj.FieldPath)
+			f.log.Info("here on before error", "resname")
 			//err = patchFieldValueToObject(obj.FieldPath, randString, desired[resource.Name(obj.Name)].Resource)
 			//if err != nil {
 			//	f.log.Debug("Error", "is", err, "obj", obj.FieldPath)
